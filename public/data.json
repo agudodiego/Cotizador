@@ -1,0 +1,68 @@
+[
+    {
+        "id": 1,
+        "categoria": "propiedad",
+        "tipo": "Casa",
+        "factor": 1.09
+    },
+    {
+        "id": 2,
+        "categoria": "propiedad",
+        "tipo": "P.H.",
+        "factor": 1.05
+    },
+    {
+        "id": 3,
+        "categoria": "propiedad",
+        "tipo": "Depto. Edificio",
+        "factor": 1.02
+    },
+    {
+        "id": 4,
+        "categoria": "propiedad",
+        "tipo": "Barrio Privado",
+        "factor": 1.19
+    },
+    {
+        "id": 5,
+        "categoria": "propiedad",
+        "tipo": "Oficina",
+        "factor": 2.39
+    },
+    {
+        "id": 6,
+        "categoria": "propiedad",
+        "tipo": "Local Comercial",
+        "factor": 1.41
+    },
+    {
+        "id": 7,
+        "categoria": "propiedad",
+        "tipo": "Depósito Logística",
+        "factor": 1.92
+    },
+    {
+        "id": 8,
+        "categoria": "ubicacion",
+        "tipo": "CABA",
+        "factor": 1.13
+    },
+    {
+        "id": 9,
+        "categoria": "ubicacion",
+        "tipo": "Tandil",
+        "factor": 1.04
+    },
+    {
+        "id": 10,
+        "categoria": "ubicacion",
+        "tipo": "Costa Atlántica",
+        "factor": 1.29
+    },
+    {
+        "id": 11,
+        "categoria": "ubicacion",
+        "tipo": "Patagonia",
+        "factor": 1.00
+    }
+]
