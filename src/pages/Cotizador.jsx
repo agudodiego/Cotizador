@@ -11,6 +11,7 @@ const Cotizador = () => {
     idUbicacion: '...',
     m2: 20
   });
+  const [mostrarAnimacion, setMostrarAnimacion] = useState(false);
   const [poliza, setPoliza] = useState(0);
   const [ultimaCotizacion, setUltimaCotizacion] = useState({});
   const [btnGrabarVisible, setBtnGrabarVisible] = useState(false);
@@ -26,20 +27,27 @@ const Cotizador = () => {
   }
 
   const armarCotizacion = () => {
-    const datosPropiedad = buscarItem(data, datosFormulario.idPropiedad);
-    const datosUbicacion = buscarItem(data, datosFormulario.idUbicacion);
-
-    armarFecha();
-    const cotizacionActual = new Cotizacion(armarFecha(),
+    setMostrarAnimacion(true);
+    setTimeout(() => {
+      
+      const datosPropiedad = buscarItem(data, datosFormulario.idPropiedad);
+      const datosUbicacion = buscarItem(data, datosFormulario.idUbicacion);
+      
+      armarFecha();
+      const cotizacionActual = new Cotizacion(armarFecha(),
       COSTOM2,
       datosPropiedad.tipo,
       datosPropiedad.factor,
       datosUbicacion.tipo,
       datosUbicacion.factor,
       datosFormulario.m2);
-
-    setPoliza(cotizacionActual.cotizarPoliza());
-    setUltimaCotizacion(cotizacionActual);
+      
+      setPoliza(cotizacionActual.cotizarPoliza());
+      setUltimaCotizacion(cotizacionActual);
+      
+      setMostrarAnimacion(false);
+      mostarAlerta('', 'Cotización realizada con éxito', 'success');
+    }, 2500);
   }
 
   const guardarHistorial = ()=> {
@@ -116,7 +124,7 @@ const Cotizador = () => {
           <input type="number" id="metros2" value={datosFormulario.m2} name="m2" onChange={recopilarData} min="20" max="500" required />
 
           <div className="center separador">
-            <button type='submit' className="button button-outline">Cotizar</button>
+            <button type='submit' className=" button-outline"> { mostrarAnimacion ? <img src={require("../images/Ellipsis-1.1s-44px.gif")} width="40px"/> : 'Cotizar'}</button>
           </div>
         </form>
 
