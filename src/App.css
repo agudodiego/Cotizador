@@ -30,8 +30,6 @@ label {
     margin: auto;
     max-width: 900px;
     background-color: white;
-    /* margin-left: 5%;
-    margin-right: 5%; */
     padding: 10px;
     border-color: whitesmoke;
     box-shadow: 26px 28px 15px -8px rgba(0,0,0,0.15);
@@ -88,4 +86,9 @@ button:active {
 
 .text-rojo {
     color: red !important;
+}
+
+.iconoBorrar {
+    font-size: 20px;
+    cursor: pointer;
 }

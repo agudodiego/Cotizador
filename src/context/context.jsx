@@ -25,6 +25,16 @@ export const AppProvider = ({ children }) => {
     })
   }
 
+  const mostarAlertaHistorial = (posicion, icono, titulo)=> {
+    Swal.fire({
+      position: posicion,
+      icon: icono,
+      title: titulo,
+      showConfirmButton: false,
+      timer: 1500
+    })
+  }
+
   /**
    * Funcion asincrona para el fetch de datos
    */
@@ -39,7 +49,8 @@ export const AppProvider = ({ children }) => {
     COSTOM2,
     data,
     getData,
-    mostarAlerta
+    mostarAlerta,
+    mostarAlertaHistorial
   }), [data])
 
   return (

@@ -5,11 +5,14 @@ import { Cotizacion } from "../model/class.cotizacion";
 
 const Cotizador = () => {
 
-  const { data, getData, COSTOM2, mostarAlerta } = useAppContext();
-  const [idPropiedad, setIdPropiedad] = useState('...');
-  const [idUbicacion, setIdUbicacion] = useState('...');
-  const [m2, setM2] = useState(20);
+  const { data, getData, COSTOM2, mostarAlerta, mostarAlertaHistorial } = useAppContext();
+  const [datosFormulario, setDatosFormulario] = useState({
+    idPropiedad: '...',
+    idUbicacion: '...',
+    m2: 20
+  });
   const [poliza, setPoliza] = useState(0);
+  const [ultimaCotizacion, setUltimaCotizacion] = useState({});
   const [btnGrabarVisible, setBtnGrabarVisible] = useState(false);
 
   const buscarItem = (array, id) => {
@@ -17,38 +20,56 @@ const Cotizador = () => {
     return aux[0];
   }
 
-  const armarCotizacion = () => {
-    const datosPropiedad = buscarItem(data, idPropiedad);
-    const datosUbicacion = buscarItem(data, idUbicacion);
+  const armarFecha = ()=> {
+    let fecha = new Date();
+    return `${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()}, ${fecha.getHours()}:${fecha.getMinutes()}`;
+  }
 
-    const cotizacionActual = new Cotizacion(COSTOM2,
+  const armarCotizacion = () => {
+    const datosPropiedad = buscarItem(data, datosFormulario.idPropiedad);
+    const datosUbicacion = buscarItem(data, datosFormulario.idUbicacion);
+
+    armarFecha();
+    const cotizacionActual = new Cotizacion(armarFecha(),
+      COSTOM2,
       datosPropiedad.tipo,
       datosPropiedad.factor,
       datosUbicacion.tipo,
       datosUbicacion.factor,
-      m2);
+      datosFormulario.m2);
 
     setPoliza(cotizacionActual.cotizarPoliza());
+    setUltimaCotizacion(cotizacionActual);
+  }
+
+  const guardarHistorial = ()=> {
+    const historialCotizaciones = JSON.parse(localStorage.getItem("historialCotizaciones")) || [];
+    historialCotizaciones.push(ultimaCotizacion);
+    localStorage.setItem("historialCotizaciones", JSON.stringify(historialCotizaciones));
+    mostarAlertaHistorial('top-end','success','Cotización guardada');
   }
 
   const grabarCotizacion = () => {
     setBtnGrabarVisible(false);
-    setIdPropiedad('...');
-    setIdUbicacion('...');
+    setDatosFormulario({idPropiedad: '...', idUbicacion: '...', m2: 20 });
     setPoliza(0);
-    // TODO armar funcion para grabar en localStorage a traves del icono del diskette
+    guardarHistorial();    
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (idPropiedad === '...' || idUbicacion === '...') {
+    if (datosFormulario.idPropiedad == '...' || datosFormulario.idUbicacion == '...') {
       mostarAlerta('', 'Debes completar todos los datos en pantalla..', 'warning');
       return
     }
 
     armarCotizacion();
     setBtnGrabarVisible(true);
+  }
+
+  const recopilarData = (e)=> {
+    setDatosFormulario((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
   useEffect(() => {
@@ -68,7 +89,7 @@ const Cotizador = () => {
 
         <form onSubmit={handleSubmit}>
           <label htmlFor="propiedad">Selecciona el tipo de propiedad</label>
-          <select value={idPropiedad} onChange={(e) => setIdPropiedad(e.target.value)} id="propiedad">
+          <select value={datosFormulario.idPropiedad} name="idPropiedad" onChange={recopilarData} id="propiedad">
             <option defaultValue disabled>...</option>
             {data.map((item, index) => {
               return (
@@ -80,7 +101,7 @@ const Cotizador = () => {
           </select>
 
           <label htmlFor="ubicacion">Selecciona su ubicación</label>
-          <select value={idUbicacion} onChange={(e) => setIdUbicacion(e.target.value)} id="ubicacion">
+          <select value={datosFormulario.idUbicacion} name="idUbicacion" onChange={recopilarData} id="ubicacion">
             <option defaultValue disabled>...</option>
             {data.map((item, index) => {
               return (
@@ -92,7 +113,7 @@ const Cotizador = () => {
           </select>
 
           <label htmlFor="metros2">Ingresa los Metros cuadrados:</label>
-          <input type="number" id="metros2" value={m2} onChange={(e) => setM2(e.target.value)} min="20" max="500" required />
+          <input type="number" id="metros2" value={datosFormulario.m2} name="m2" onChange={recopilarData} min="20" max="500" required />
 
           <div className="center separador">
             <button type='submit' className="button button-outline">Cotizar</button>

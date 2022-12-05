@@ -1,5 +1,6 @@
 export class Cotizacion {
-    constructor(costoM2, propiedad, factorPropiedad, ubicacion, factorUbicacion, metros2) {
+    constructor(fecha, costoM2, propiedad, factorPropiedad, ubicacion, factorUbicacion, metros2) {
+        this.fecha = fecha
         this.costoM2 = parseFloat(costoM2)
         this.propiedad = propiedad
         this.factorPropiedad = parseFloat(factorPropiedad)
@@ -10,9 +11,9 @@ export class Cotizacion {
     }
 
     cotizarPoliza() {
-        let resultado = (this.costoM2 * this.factorPropiedad * this.factorUbicacion * this.metros2)
-        this.poliza = resultado
-            return resultado.toFixed(2)
+        let resultado = (this.costoM2 * this.factorPropiedad * this.factorUbicacion * this.metros2);
+        this.poliza = resultado;
+            return resultado.toFixed(2);
     }
     
 }
